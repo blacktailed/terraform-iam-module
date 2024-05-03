@@ -1,5 +1,5 @@
 locals {
-  allowed_services = length(var.allowed_services) != 0 ? distinct(var.allowed_services) : null
+  allowed_services = length(var.allowed_services) != 0 ? distinct(var.allowed_services) : []
 }
 
 resource "aws_iam_policy" "policy" {
