@@ -102,82 +102,54 @@ data "aws_iam_policy_document" "assume_role" {
       }
     }
   }
-  
-  dynamic "statement" {
-    for_each = var.eks_oidc_providers
 
-    content {
-      effect  = "Allow"
-      actions = ["sts:AssumeRoleWithWebIdentity"]
+  # dynamic "statement" {
+  #   for_each = local.urls
 
-      principals {
-        type        = "Federated"
-        identifiers = [statement.value.provider_arn]
-      }
+  #   content {
+  #     effect  = "Allow"
+  #     actions = ["sts:AssumeRoleWithWebIdentity"]
 
-      condition {
-        test     = var.assume_role_condition_test
-        variable = "${replace(statement.value.provider_arn, "/^(.*provider/)/", "")}:sub"
-        values   = [for sa in statement.value.namespace_service_accounts : "system:serviceaccount:${sa}"]
-      }
+  #     principals {
+  #       type = "Federated"
 
-      # https://aws.amazon.com/premiumsupport/knowledge-center/eks-troubleshoot-oidc-and-irsa/?nc1=h_ls
-      condition {
-        test     = var.assume_role_condition_test
-        variable = "${replace(statement.value.provider_arn, "/^(.*provider/)/", "")}:aud"
-        values   = ["sts.amazonaws.com"]
-      }
+  #       identifiers = ["arn:${data.aws_partition.current.partition}:iam::${local.aws_account_id}:oidc-provider/${statement.value}"]
+  #     }
 
-    }
-  }
+  #     dynamic "condition" {
+  #       for_each = length(var.oidc_fully_qualified_subjects) > 0 ? local.urls : []
 
-  dynamic "statement" {
-    for_each = local.urls
+  #       content {
+  #         test     = "StringEquals"
+  #         variable = "${statement.value}:sub"
+  #         values   = var.oidc_fully_qualified_subjects
+  #       }
+  #     }
 
-    content {
-      effect  = "Allow"
-      actions = ["sts:AssumeRoleWithWebIdentity"]
+  #     dynamic "condition" {
+  #       for_each = length(var.oidc_subjects_with_wildcards) > 0 ? local.urls : []
 
-      principals {
-        type = "Federated"
+  #       content {
+  #         test     = "StringLike"
+  #         variable = "${statement.value}:sub"
+  #         values   = var.oidc_subjects_with_wildcards
+  #       }
+  #     }
 
-        identifiers = ["arn:${data.aws_partition.current.partition}:iam::${local.aws_account_id}:oidc-provider/${statement.value}"]
-      }
+  #     dynamic "condition" {
+  #       for_each = length(var.oidc_fully_qualified_audiences) > 0 ? local.urls : []
 
-      dynamic "condition" {
-        for_each = length(var.oidc_fully_qualified_subjects) > 0 ? local.urls : []
+  #       content {
+  #         test     = "StringLike"
+  #         variable = "${statement.value}:aud"
+  #         values   = var.oidc_fully_qualified_audiences
+  #       }
+  #     }
+  #   }
+  # }
 
-        content {
-          test     = "StringEquals"
-          variable = "${statement.value}:sub"
-          values   = var.oidc_fully_qualified_subjects
-        }
-      }
-
-      dynamic "condition" {
-        for_each = length(var.oidc_subjects_with_wildcards) > 0 ? local.urls : []
-
-        content {
-          test     = "StringLike"
-          variable = "${statement.value}:sub"
-          values   = var.oidc_subjects_with_wildcards
-        }
-      }
-
-      dynamic "condition" {
-        for_each = length(var.oidc_fully_qualified_audiences) > 0 ? local.urls : []
-
-        content {
-          test     = "StringLike"
-          variable = "${statement.value}:aud"
-          values   = var.oidc_fully_qualified_audiences
-        }
-      }
-    }
-  }
-
-#   dynamic "statement" {
-#     for_each = var.create_role ? [1] : []
+  #   dynamic "statement" {
+    #     for_each = var.create_role ? [1] : []
     statement {
       effect  = "Allow"
       actions = compact(distinct(concat(["sts:AssumeRole"], var.trusted_role_actions)))
@@ -226,5 +198,5 @@ data "aws_iam_policy_document" "assume_role" {
         }
       }
     }
-#   }
+  #   }
 }
