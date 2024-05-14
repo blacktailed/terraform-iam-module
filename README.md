@@ -3,7 +3,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.2 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.27 |
 
 ## Providers
@@ -20,16 +20,16 @@ No modules.
 ## Required Inputs
 이 변수는 특정 변수가 true일 경우 모듈 블록에 반드시 설정되어야 한다.
 
-**group_name** `[string]`
+- **group_name** `[string]`
 `create_group` 변수가 true일 경우 반드시 값을 넣어야 한다.
 
-**policy_name** `[string]`
+- **policy_name** `[string]`
 `create_policy` 변수가 true일 경우 반드시 값을 넣어야 한다.
 
-**role_name** `[string]`
+- **role_name** `[string]`
 `create_role` 변수가 true일 경우 반드시 값을 넣어야 한다.
 
-**user_name** `[string]`
+- **user_name** `[string]`
 `create_user` 변수가 true일 경우 반드시 값을 넣어야 한다.
 
 ## Resources
