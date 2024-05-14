@@ -10,6 +10,12 @@ resource "aws_iam_user" "this" {
     var.tags,
     var.user_tags
   )
+  lifecycle {
+    precondition {
+      condition = var.create_oidc && var.user_name != ""
+      error_message = "User name is required variable."
+    }
+  }
 }
 
 resource "aws_iam_user_login_profile" "this" {

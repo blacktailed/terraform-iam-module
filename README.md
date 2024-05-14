@@ -72,7 +72,7 @@ No modules.
 | <a name="input_custom_role_trust_policy"></a> [custom\_role\_trust\_policy](#input\_custom\_role\_trust\_policy) | A custom role trust policy. (Only valid if create\_custom\_role\_trust\_policy = true) | `string` | `""` | no |
 | <a name="input_force_destroy"></a> [force\_destroy](#input\_force\_destroy) | When destroying this user, destroy even if it has non-Terraform-managed IAM access keys, login profile or MFA devices. Without force\_destroy a user with non-Terraform-managed access keys and login profile will fail to be destroyed. | `bool` | `false` | no |
 | <a name="input_force_detach_policies"></a> [force\_detach\_policies](#input\_force\_detach\_policies) | Whether policies should be detached from this role when destroying | `bool` | `false` | no |
-| <a name="input_group_name"></a> [group\_name](#input\_group\_name) | Name of IAM policy and IAM group | `string` | `null` | no |
+| <a name="input_group_name"></a> [group\_name](#input\_group\_name) | Name of IAM policy and IAM group | `string` | `null` | yes |
 | <a name="input_group_path"></a> [group\_path](#input\_group\_path) | Path of IAM policy and IAM group | `string` | `"/"` | no |
 | <a name="input_group_tags"></a> [group\_tags](#input\_group\_tags) | A map of tags to add to all resources. | `map(string)` | `{}` | no |
 | <a name="input_group_users"></a> [group\_users](#input\_group\_users) | List of IAM users to have in an IAM group which can assume the role | `list(string)` | `[]` | no |
@@ -91,13 +91,13 @@ No modules.
 | <a name="input_policy_arns"></a> [policy\_arns](#input\_policy\_arns) | The list of ARNs of policies directly assigned to the IAM user | `list(string)` | `[]` | no |
 | <a name="input_policy_description"></a> [policy\_description](#input\_policy\_description) | The description of the policy | `string` | `"IAM Policy"` | no |
 | <a name="input_policy_json"></a> [policy\_json](#input\_policy\_json) | JSON policy document if you want to add custom actions | `string` | `"{}"` | no |
-| <a name="input_policy_name"></a> [policy\_name](#input\_policy\_name) | The name of the policy | `string` | `null` | no |
+| <a name="input_policy_name"></a> [policy\_name](#input\_policy\_name) | The name of the policy | `string` | `null` | yes |
 | <a name="input_policy_path"></a> [policy\_path](#input\_policy\_path) | The path of the policy in IAM | `string` | `"/"` | no |
 | <a name="input_policy_tags"></a> [policy\_tags](#input\_policy\_tags) | Additional tags for the policy | `map(string)` | `{}` | no |
-| <a name="input_provider_url"></a> [provider\_url](#input\_provider\_url) | URL of the OIDC Provider. Use provider\_urls to specify several URLs. | `string` | `""` | no |
+| <a name="input_provider_url"></a> [provider\_url](#input\_provider\_url) | URL of the OIDC Provider. Use provider\_urls to specify several URLs. | `string` | `""` | yes |
 | <a name="input_provider_urls"></a> [provider\_urls](#input\_provider\_urls) | List of URLs of the OIDC Providers | `list(string)` | `[]` | no |
 | <a name="input_role_description"></a> [role\_description](#input\_role\_description) | IAM Role description | `string` | `""` | no |
-| <a name="input_role_name"></a> [role\_name](#input\_role\_name) | IAM role name | `string` | `null` | no |
+| <a name="input_role_name"></a> [role\_name](#input\_role\_name) | IAM role name | `string` | `null` | yes |
 | <a name="input_role_path"></a> [role\_path](#input\_role\_path) | Path of IAM role | `string` | `"/"` | no |
 | <a name="input_role_permissions_boundary_arn"></a> [role\_permissions\_boundary\_arn](#input\_role\_permissions\_boundary\_arn) | Permissions boundary ARN to use for IAM role | `string` | `""` | no |
 | <a name="input_role_policy_arns"></a> [role\_policy\_arns](#input\_role\_policy\_arns) | List of ARNs of IAM policies to attach to IAM role | `list(string)` | `[]` | no |
@@ -114,7 +114,7 @@ No modules.
 | <a name="input_trusted_role_arns"></a> [trusted\_role\_arns](#input\_trusted\_role\_arns) | ARNs of AWS entities who can assume these roles | `list(string)` | `[]` | no |
 | <a name="input_trusted_role_services"></a> [trusted\_role\_services](#input\_trusted\_role\_services) | AWS Services that can assume these roles | `list(string)` | `[]` | no |
 | <a name="input_upload_iam_user_ssh_key"></a> [upload\_iam\_user\_ssh\_key](#input\_upload\_iam\_user\_ssh\_key) | Whether to upload a public ssh key to the IAM user | `bool` | `false` | no |
-| <a name="input_user_name"></a> [user\_name](#input\_user\_name) | Desired name for the IAM user | `string` | `null` | no |
+| <a name="input_user_name"></a> [user\_name](#input\_user\_name) | Desired name for the IAM user | `string` | `null` | yes |
 | <a name="input_user_path"></a> [user\_path](#input\_user\_path) | Desired path for the IAM user | `string` | `"/"` | no |
 | <a name="input_user_tags"></a> [user\_tags](#input\_user\_tags) | Additional tags for the user | `map(string)` | `{}` | no |
 | <a name="input_web_console_services"></a> [web\_console\_services](#input\_web\_console\_services) | List of web console services to allow | `list(string)` | `[]` | no |
