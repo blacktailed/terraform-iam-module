@@ -13,12 +13,6 @@ variable "policy_name" {
   default     = null
 }
 
-variable "policy_name_prefix" {
-  description = "IAM policy name prefix"
-  type        = string
-  default     = null
-}
-
 variable "policy_path" {
   description = "The path of the policy in IAM"
   type        = string
@@ -58,25 +52,26 @@ variable "policy_json" {
 variable "allow_cloudwatch_logs_query" {
   description = "Allows StartQuery/StopQuery/FilterLogEvents CloudWatch actions"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "allow_predefined_sts_actions" {
   description = "Allows GetCallerIdentity/GetSessionToken/GetAccessKeyInfo sts actions"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "allow_web_console_services" {
   description = "Allows List/Get/Describe/View actions for services used when browsing AWS console (e.g. resource-groups, tag, health services)"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "web_console_services" {
   description = "List of web console services to allow"
   type        = list(string)
-  default     = ["resource-groups", "tag", "health", "ce"]
+  default     = []
+  # default     = ["resource-groups", "tag", "health", "ce"]
 }
 
 ##############
@@ -229,12 +224,6 @@ variable "role_name" {
   default     = null
 }
 
-variable "role_name_prefix" {
-  description = "IAM role name prefix"
-  type        = string
-  default     = null
-}
-
 variable "role_path" {
   description = "Path of IAM role"
   type        = string
@@ -358,19 +347,79 @@ variable "oidc_fully_qualified_audiences" {
   default     = []
 }
 
-# EKS
-variable "eks_oidc_providers" {
-  description = "Map of OIDC providers where each provider map should contain the `provider_arn` and `namespace_service_accounts`"
-  type        = any
-  default     = {}
-}
-variable "assume_role_condition_test" {
-  description = "Name of the [IAM condition operator](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition_operators.html) to evaluate when assuming the role"
-  type        = string
-  default     = "StringEquals"
-}
-
-
 ##############
 # Role with Saml
 ##############
+
+
+##############
+# Group
+##############
+variable "create_group" {
+  description = "Whether to create IAM group"
+  type        = bool
+  default     = false
+}
+variable "group_name" {
+  description = "Name of IAM policy and IAM group"
+  type        = string
+  default     = null
+}
+
+variable "group_path" {
+  description = "Path of IAM policy and IAM group"
+  type        = string
+  default     = "/"
+}
+
+variable "custom_group_policies" {
+  description = "List of maps of inline IAM policies to attach to IAM group. Should have `name` and `policy` keys in each element. policy는 json으로 넣어야함 ex)data.aws_iam_policy_document.example_policy.json"
+  type        = list(map(string))
+  default     = []
+}
+
+variable "custom_group_policy_arns" {
+  description = "List of IAM policies ARNs to attach to IAM group"
+  type        = list(string)
+  default     = []
+}
+
+variable "group_users" {
+  description = "List of IAM users to have in an IAM group which can assume the role"
+  type        = list(string)
+  default     = []
+}
+
+variable "group_tags" {
+  description = "A map of tags to add to all resources."
+  type        = map(string)
+  default     = {}
+}
+
+##############
+# OIDC
+##############
+variable "create_oidc" {
+  description = "Controls if resources should be created"
+  type        = bool
+  default     = false
+}
+
+variable "client_id_list" {
+  description = "List of client IDs (also known as audiences) for the IAM OIDC provider. Defaults to STS service if not values are provided"
+  type        = list(string)
+  default     = []
+}
+
+variable "thumbprints" {
+  description = "List of additional thumbprints to add to the thumbprint list."
+  type        = list(string)
+  # https://github.blog/changelog/2023-06-27-github-actions-update-on-oidc-integration-with-aws/
+  default = []
+}
+
+variable "oidc_tags" {
+  description = "A map of tags to add to all resources."
+  type        = map(string)
+  default     = {}
+}

@@ -6,7 +6,6 @@ resource "aws_iam_policy" "policy" {
   count = var.create_policy ? 1 : 0
 
   name        = var.policy_name
-  name_prefix = var.policy_name_prefix
   path        = var.policy_path
   description = var.policy_description
 
@@ -16,5 +15,25 @@ resource "aws_iam_policy" "policy" {
     var.tags,
     var.policy_tags
   )
+
+  lifecycle {
+    precondition {
+      condition = var.create_policy && var.policy_name != null
+      error_message = "policy name is required variable."
+    }
+  }
   
+}
+
+resource "aws_iam_policy" "group" {
+  count = length(var.custom_group_policies)
+
+  name        = var.custom_group_policies[count.index]["name"]
+  policy      = var.custom_group_policies[count.index]["policy"]
+  description = lookup(var.custom_group_policies[count.index], "description", null)
+
+  tags = merge(
+    var.tags,
+    var.group_tags
+  )
 }

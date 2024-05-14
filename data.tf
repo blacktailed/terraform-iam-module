@@ -1,3 +1,6 @@
+data "aws_caller_identity" "current" {}
+data "aws_partition" "current" {}
+
 ##############
 # Policy
 ##############
@@ -65,6 +68,7 @@ data "aws_iam_policy_document" "logs_query" {
     resources = ["*"]
   }
 }
+
 data "aws_iam_policy_document" "combined" {
   source_policy_documents = concat(
     [data.aws_iam_policy_document.allowed_services.json],
@@ -79,7 +83,6 @@ data "aws_iam_policy_document" "combined" {
 # Role
 ##############
 data "aws_iam_policy_document" "assume_role" {
-  count = !var.create_custom_role_trust_policy ? 1 : 0
 
   dynamic "statement" {
     # https://aws.amazon.com/blogs/security/announcing-an-update-to-iam-role-trust-policy-behavior/
@@ -98,7 +101,7 @@ data "aws_iam_policy_document" "assume_role" {
       condition {
         test     = "ArnLike"
         variable = "aws:PrincipalArn"
-        values   = ["arn:${local.partition}:iam::${local.account_id}:role${var.role_path}${local.role_name_condition}"]
+        values   = ["arn:${local.partition}:iam::${local.account_id}:role${var.role_path}${var.role_name}"]
       }
     }
   }
@@ -199,4 +202,21 @@ data "aws_iam_policy_document" "assume_role" {
       }
     }
   #   }
+}
+
+
+##############
+# OIDC 
+##############
+data "tls_certificate" "this" {
+  count = var.create_oidc ? 1 : 0
+
+  url = var.provider_url
+
+  lifecycle {
+    precondition {
+      condition = var.create_oidc && var.provider_url != ""
+      error_message = "The URL of the identity provider is required variable."
+    }
+  }
 }

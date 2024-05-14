@@ -248,3 +248,30 @@ output "role_sts_externalid" {
   description = "STS ExternalId condition value to use with a role"
   value       = var.role_sts_externalid
 }
+##############
+# Group
+##############
+output "group_users" {
+  description = "List of IAM users in IAM group"
+  value       = flatten(aws_iam_group_membership.this[*].users)
+}
+
+# output "group_assumable_roles" {
+#   description = "List of ARNs of IAM roles which members of IAM group can assume"
+#   value       = var.assumable_roles
+# }
+
+output "group_name" {
+  description = "IAM group name"
+  value       = try(aws_iam_group.this[0].name, var.group_name)
+}
+
+output "group_arn" {
+  description = "IAM group arn"
+  value       = try(aws_iam_group.this[0].arn, "")
+}
+
+# output "group_policy" {
+#   description = "value"
+#   value       = try(aws_iam_group.this[0].policy, "")
+# }
