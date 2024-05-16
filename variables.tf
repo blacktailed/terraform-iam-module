@@ -2,73 +2,73 @@
 # Policy
 ##############
 variable "create_policy" {
-  description = "Whether to create the IAM policy"
+  description = "IAM policy 생성 여부"
   type        = bool
   default     = false
 }
 
 variable "policy_name" {
-  description = "The name of the policy"
+  description = "policy 이름. create_policy가 true일 경우 필수 값"
   type        = string
   default     = null
 }
 
 variable "policy_path" {
-  description = "The path of the policy in IAM"
+  description = "IAM에서 policy 경로 설정"
   type        = string
   default     = "/"
 }
 
 variable "policy_description" {
-  description = "The description of the policy"
+  description = "policy 설명"
   type        = string
   default     = "IAM Policy"
 }
 
 variable "tags" {
-  description = "A map of tags to add to all resources."
+  description = "모듈 내 모든 리소스에 적용되는 태그"
   type        = map(string)
   default     = {}
 }
 
 variable "policy_tags" {
-  description = "Additional tags for the policy"
+  description = "policy에 추가할 태그"
   type        = map(string)
   default     = {}
 }
 
 variable "allowed_services" {
-  description = "List of services to allow Get/List/Describe/View options. Service name should be the same as corresponding service IAM prefix. See what it is for each service here https://docs.aws.amazon.com/service-authorization/latest/reference/reference_policies_actions-resources-contextkeys.html"
+  description = "Get/List/Describe/View을 허용할 서비스를 기입. Service name should be the same as corresponding service IAM prefix. See what it is for each service here https://docs.aws.amazon.com/service-authorization/latest/reference/reference_policies_actions-resources-contextkeys.html"
   type        = list(string)
   default     = []
 }
 
 variable "policy_json" {
-  description = "JSON policy document if you want to add custom actions"
+  description = "(선택사항)? 사용자 지정 JSON policy document"
   type        = string
   default     = "{}"
 }
 
 variable "allow_cloudwatch_logs_query" {
-  description = "Allows StartQuery/StopQuery/FilterLogEvents CloudWatch actions"
+  description = "StartQuery/StopQuery/FilterLogEvents CloudWatch actions 허용 여부"
   type        = bool
   default     = false
 }
 
 variable "allow_predefined_sts_actions" {
-  description = "Allows GetCallerIdentity/GetSessionToken/GetAccessKeyInfo sts actions"
+  description = "GetCallerIdentity/GetSessionToken/GetAccessKeyInfo sts actions 허용 여부"
   type        = bool
   default     = false
 }
 
 variable "allow_web_console_services" {
-  description = "Allows List/Get/Describe/View actions for services used when browsing AWS console (e.g. resource-groups, tag, health services)"
+  description = "AWS 콘솔 탐색할 때 사용되는 서비스에 대한 List/Get/Describe/View actions 허용 여부 (e.g. resource-groups, tag, health services)"
   type        = bool
   default     = false
 }
 
 variable "web_console_services" {
-  description = "List of web console services to allow"
+  description = "허용할 웹 콘솔 서비스 List"
   type        = list(string)
   default     = []
   # default     = ["resource-groups", "tag", "health", "ce"]
@@ -78,97 +78,97 @@ variable "web_console_services" {
 # User
 ##############
 variable "create_user" {
-  description = "Whether to create the IAM user"
+  description = "IAM user 생성 여부"
   type        = bool
   default     = false
 }
 
 variable "create_iam_user_login_profile" {
-  description = "Whether to create IAM user login profile"
+  description = "IAM user login profile 생성 여부"
   type        = bool
   default     = true
 }
 
 variable "create_iam_access_key" {
-  description = "Whether to create IAM access key"
+  description = "IAM access key 생성 여부"
   type        = bool
   default     = true
 }
 
 variable "user_name" {
-  description = "Desired name for the IAM user"
+  description = "IAM user 이름"
   type        = string
   default     = null
 }
 
 variable "user_path" {
-  description = "Desired path for the IAM user"
+  description = "IAM user 경로"
   type        = string
   default     = "/"
 }
 
 variable "force_destroy" {
-  description = "When destroying this user, destroy even if it has non-Terraform-managed IAM access keys, login profile or MFA devices. Without force_destroy a user with non-Terraform-managed access keys and login profile will fail to be destroyed."
+  description = "User 삭제 시 Terraform에서 관리하지 않는 access key, login profile 강제 삭제 여부"
   type        = bool
   default     = false
 }
 
 variable "pgp_key" {
-  description = "Either a base-64 encoded PGP public key, or a keybase username in the form `keybase:username`. Used to encrypt password and access key."
+  description = "(선택사항) base-64로 인코딩된 PGP public key 또는 `keybase:username` 형식의 키베이스 user 이름. 비밀번호와 access key를 암호화하는데 사용"
   type        = string
   default     = ""
 }
 
 variable "iam_access_key_status" {
-  description = "Access key status to apply."
+  description = "적용할 access key 상태"
   type        = string
   default     = null
 }
 
 variable "password_reset_required" {
-  description = "Whether the user should be forced to reset the generated password on first login."
+  description = "첫 로그인 시 비밀번호 재설정해야 하는지 여부"
   type        = bool
   default     = true
 }
 
 variable "password_length" {
-  description = "The length of the generated password"
+  description = "생성된 비밀번호 길이"
   type        = number
   default     = 20
 }
 
 variable "upload_iam_user_ssh_key" {
-  description = "Whether to upload a public ssh key to the IAM user"
+  description = "IAM user에게 public ssh key를 업로드할지 여부"
   type        = bool
   default     = false
 }
 
 variable "ssh_key_encoding" {
-  description = "Specifies the public key encoding format to use in the response. To retrieve the public key in ssh-rsa format, use SSH. To retrieve the public key in PEM format, use PEM"
+  description = "응답에 사용할 공개 키 인코딩 형식 지정. ssh-rsa 형식은 SSH, PEM 형식은 PEM으로 작성"
   type        = string
   default     = "SSH"
 }
 
 variable "ssh_public_key" {
-  description = "The SSH public key. The public key must be encoded in ssh-rsa format or PEM format"
+  description = "SSH 공개 키. ssh-rsa 또는 PEM 형식으로 인코딩해야 함"
   type        = string
   default     = ""
 }
 
 variable "permissions_boundary" {
-  description = "The ARN of the policy that is used to set the permissions boundary for the user."
+  description = "user에 대한 permissions boundary를 설정하는데 사용되는 정책의 ARN"
   type        = string
   default     = ""
 }
 
 variable "policy_arns" {
-  description = "The list of ARNs of policies directly assigned to the IAM user"
+  description = "IAM user에 직접 할당된 정책의 ARN List"
   type        = list(string)
   default     = []
 }
 
 variable "user_tags" {
-  description = "Additional tags for the user"
+  description = "user에 추가할 태그"
   type        = map(string)
   default     = {}
 }
@@ -177,7 +177,7 @@ variable "user_tags" {
 # Role
 ##############
 variable "trusted_role_actions" {
-  description = "Additional trusted role actions"
+  description = "추가적인 trusted role actions List"
   type        = list(string)
   default     = ["sts:AssumeRole", "sts:TagSession"]
 }
@@ -195,203 +195,186 @@ variable "trusted_role_services" {
 }
 
 variable "mfa_age" {
-  description = "Max age of valid MFA (in seconds) for roles which require MFA"
+  description = "MFA가 필요한 role에 대한 MFA 최대유효시간 설정"
   type        = number
   default     = 86400
 }
 
 variable "max_session_duration" {
-  description = "Maximum CLI/API session duration in seconds between 3600 and 43200"
+  description = "최대 CLI/API 세션 기간 (3600초~43200초)"
   type        = number
   default     = 3600
 }
 
 variable "create_role" {
-  description = "Whether to create a role"
+  description = "role 생성 여부"
   type        = bool
   default     = false
 }
 
 variable "create_instance_profile" {
-  description = "Whether to create an instance profile"
+  description = "instance profile 생성 여부"
   type        = bool
   default     = false
 }
 
 variable "role_name" {
-  description = "IAM role name"
+  description = "IAM role 이름"
   type        = string
   default     = null
 }
 
 variable "role_path" {
-  description = "Path of IAM role"
+  description = "IAM role 경로"
   type        = string
   default     = "/"
 }
 
 variable "role_requires_mfa" {
-  description = "Whether role requires MFA"
+  description = "role에 MFA 필요 여부"
   type        = bool
   default     = true
 }
 
 variable "role_permissions_boundary_arn" {
-  description = "Permissions boundary ARN to use for IAM role"
+  description = "IAM role에 사용할 Permissions boundary ARN"
   type        = string
   default     = ""
 }
 
 variable "role_tags" {
-  description = "Additional tags for the role"
+  description = "role에 추가할 태그"
   type        = map(string)
   default     = {}
 }
 
 variable "instance_profile_tags" {
-  description = "Additional tags for the instance profile role"
+  description = "instance profile role에 추가할 태그"
   type        = map(string)
   default     = {}
 }
 
 variable "role_policy_arns" {
-  description = "List of ARNs of IAM policies to attach to IAM role"
+  description = "IAM role에 연결할 IAM policy ARN List"
   type        = list(string)
   default     = []
 }
 
 variable "custom_role_trust_policy" {
-  description = "A custom role trust policy. (Only valid if create_custom_role_trust_policy = true)"
+  description = "사용자 지정 role trust policy. create_custom_role_trust_policy이 true인 경우에만 사용"
   type        = string
   default     = ""
 }
 
 variable "create_custom_role_trust_policy" {
-  description = "Whether to create a custom_role_trust_policy. Prevent errors with count, when custom_role_trust_policy is computed"
+  description = "custom_role_trust_policy 생성 여부. Prevent errors with count, when custom_role_trust_policy is computed"
   type        = bool
   default     = false
 }
 
 variable "force_detach_policies" {
-  description = "Whether policies should be detached from this role when destroying"
+  description = "policy 삭제 시 이 role에서 분리할지 여부"
   type        = bool
   default     = false
 }
 
 variable "role_description" {
-  description = "IAM Role description"
+  description = "IAM Role 설명"
   type        = string
   default     = ""
 }
 
 variable "role_sts_externalid" {
-  description = "STS ExternalId condition values to use with a role (when MFA is not required)"
+  description = "role과 함께 사용할 STS ExternalId 조건 값 (MFA가 필요하지 않는 경우)"
   type        = any
   default     = []
 }
 
 variable "allow_self_assume_role" {
-  description = "Determines whether to allow the role to be [assume itself](https://aws.amazon.com/blogs/security/announcing-an-update-to-iam-role-trust-policy-behavior/)"
+  description = "role이 스스로 assume이 되도록 허용할지 여부 (https://aws.amazon.com/blogs/security/announcing-an-update-to-iam-role-trust-policy-behavior/)"
   type        = bool
   default     = false
-}
-
-variable "role_requires_session_name" {
-  description = "Determines if the role-session-name variable is needed when assuming a role(https://aws.amazon.com/blogs/security/easily-control-naming-individual-iam-role-sessions/)"
-  type        = bool
-  default     = false
-}
-
-variable "role_session_name" {
-  description = "role_session_name for roles which require this parameter when being assumed. By default, you need to set your own username as role_session_name"
-  type        = list(string)
-  default     = ["$${aws:username}"]
-}
+} 
 
 ##############
 # Role with OIDC
 ##############
 variable "provider_url" {
-  description = "URL of the OIDC Provider. Use provider_urls to specify several URLs."
+  description = "OIDC Provider의 URL 설정. 여러 URL 사용시 provider_urls 변수 사용"
   type        = string
   default     = ""
 }
 
 variable "provider_urls" {
-  description = "List of URLs of the OIDC Providers"
+  description = "다수의 OIDC Provider URL 설정 List"
   type        = list(string)
   default     = []
 }
 
 variable "aws_account_id" {
-  description = "The AWS account ID where the OIDC provider lives, leave empty to use the account for the AWS provider"
+  description = "OIDC provider가 있는 AWS 계정 ID로, AWS provider 계정 사용 시 공란 유지"
   type        = string
   default     = ""
 }
 
 variable "oidc_fully_qualified_subjects" {
-  description = "The fully qualified OIDC subjects to be added to the role policy"
+  description = "role policy에 추가할 OIDC subject. 예시) system:serviceaccount:default:sa1"
   type        = set(string)
   default     = []
 }
 
 variable "oidc_subjects_with_wildcards" {
-  description = "The OIDC subject using wildcards to be added to the role policy"
+  description = "role policy에 추가할 와일드카드를 사용하는 OIDC subject"
   type        = set(string)
   default     = []
 }
 
 variable "oidc_fully_qualified_audiences" {
-  description = "The audience to be added to the role policy. Set to sts.amazonaws.com for cross-account assumable role. Leave empty otherwise."
+  description = "role policy에 추가할 대상 지정. 계정 간 assumable role의 경우 sts.amazonaws.com으로 설정. 아닌 경우는 빈 값"
   type        = set(string)
   default     = []
 }
 
 ##############
-# Role with Saml
-##############
-
-
-##############
 # Group
 ##############
 variable "create_group" {
-  description = "Whether to create IAM group"
+  description = "IAM group 생성 여부"
   type        = bool
   default     = false
 }
 variable "group_name" {
-  description = "Name of IAM policy and IAM group"
+  description = "group의 IAM policy와 IAM group의 이름"
   type        = string
   default     = null
 }
 
 variable "group_path" {
-  description = "Path of IAM policy and IAM group"
+  description = "group의 IAM policy와 IAM group 경로"
   type        = string
   default     = "/"
 }
 
 variable "custom_group_policies" {
-  description = "List of maps of inline IAM policies to attach to IAM group. Should have `name` and `policy` keys in each element. policy는 json으로 넣어야함 ex)data.aws_iam_policy_document.example_policy.json"
+  description = "IAM group에 적용할 list(map(string)) 형태의 IAM policy. name과 policy 키가 무조건 존재해야 함. policy는 json 형태로 넣어야함"
   type        = list(map(string))
   default     = []
 }
 
 variable "custom_group_policy_arns" {
-  description = "List of IAM policies ARNs to attach to IAM group"
+  description = "IAM group에 적용할 IAM policy ARN"
   type        = list(string)
   default     = []
 }
 
 variable "group_users" {
-  description = "List of IAM users to have in an IAM group which can assume the role"
+  description = "IAM group에 넣을 user List"
   type        = list(string)
   default     = []
 }
 
 variable "group_tags" {
-  description = "A map of tags to add to all resources."
+  description = "group policy에 추가할 태그"
   type        = map(string)
   default     = {}
 }
@@ -400,7 +383,7 @@ variable "group_tags" {
 # OIDC
 ##############
 variable "create_oidc" {
-  description = "Controls if resources should be created"
+  description = "OIDC 생성 여부"
   type        = bool
   default     = false
 }

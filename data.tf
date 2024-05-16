@@ -176,15 +176,6 @@ data "aws_iam_policy_document" "assume_role" {
       }
 
       dynamic "condition" {
-        for_each = var.role_requires_session_name ? [1] : []
-        content {
-            test     = "StringEquals"
-            variable = "sts:RoleSessionName"
-            values   = var.role_session_name
-        }
-      }
-
-      dynamic "condition" {
         for_each = var.role_requires_mfa ? [1] : []
         content {
           test     = "Bool"
